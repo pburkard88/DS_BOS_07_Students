@@ -5,7 +5,7 @@ Queries
 
 Use the appropriate SQL queries to find answers to the following questions:
 
-Find all of the Triple Crown (Award) winners ever in Major League Baseball, with their complete batting stats for the given year. Order the results in descending order first by batting average, then by RBIs, and lastly by home runs.
+1) Find all of the Triple Crown (Award) winners ever in Major League Baseball, with their complete batting stats for the given year. Order the results in descending order first by batting average, then by RBIs, and lastly by home runs.
 
 ```sql
 # Ordered by Batting Average
@@ -21,7 +21,7 @@ Find all of the Triple Crown (Award) winners ever in Major League Baseball, with
   from Master players
   JOIN AwardsPlayers awards ON (players.playerID = awards.playerID)
   JOIN Batting bat ON (bat.playerID = players.playerID)
-  WHERE awards.awardID = "Triple Crown" AND awards.yearID = bat.yearID AND  bat.ab >= 502
+  WHERE awards.awardID = "Triple Crown" AND awards.yearID = bat.yearID AND bat.ab >= 502
   GROUP BY players.playerID, bat.yearID
   ORDER BY batting_average DESC;
 
@@ -129,7 +129,6 @@ Find all of the Triple Crown (Award) winners ever in Major League Baseball, with
 
 
 ```
-
   ```sql
   # All players winners based on batting statistics
   select
@@ -145,6 +144,7 @@ Find all of the Triple Crown (Award) winners ever in Major League Baseball, with
   ORDER BY bat.rbi  ASC ;
 ```
 ```sql
+# mussings on how to calcluate the winners from tables
   select
     bat.yearID,
     bat_rbiq.playerID,
@@ -172,26 +172,167 @@ Find all of the Triple Crown (Award) winners ever in Major League Baseball, with
 
 ```
 
-
+Calculate the number of MVPs and Triple Crown winners by position ever in major league baseball.
 ```sql
-select
-  bat.playerID,
-  bat.yearID,
-  MAX(bat.rbi) AS RBI
-  from Batting bat
-  group by bat.yearID
-  ;
-
+##### Triple Crown's only - illustrate off by position issue
+#     some double counting from having pitchers in there technically
+   select
+      field.pos,
+     count(awards.awardID)
+   from (
+     select * from AwardsPlayers where awardid = "Triple Crown"
+   ) awards
+   join  (
+     select  distinct * from  Fielding where pos != 'OF'
+   ) field ON (field.playerID = awards.playerID)
+   WHERE awards.yearID = field.yearID
+   AND awards.playerID = field.playerID
+   group by  field.pos;
+   +-----+-----------------------+
+   | pos | count(awards.awardID) |
+   +-----+-----------------------+
+   | 1B  |                     4 |
+   | 2B  |                     4 |
+   | 3B  |                     1 |
+   | CF  |                     2 |
+   | LF  |                     2 |
+   | P   |                    36 |
+   | RF  |                     1 |
+   | SS  |                     6 |
+   +-----+-----------------------+
 
 ```
-select * from Batting order by yearID, rbi)
 
-Calculate the number of MVPs and Triple Crown winners by position ever in major league baseball.
+# Needs improvements
+
+```sql
+  # need to remove the pitching at bats
+  select
+    field.pos,
+    count(*)
+  from (
+    select  AwardsPlayers.yearID, awardsplayers.playerID from AwardsPlayers
+    inner join Pitching on (pitching.playerID = AwardsPlayers.playerID)
+    where AwardsPlayers.awardid = "Triple Crown"
+    AND pitching.yearID != awardsplayers.yearID
+  ) awards
+  join  (  
+    select Fielding.playerID, Fielding.pos, Fielding.yearID from  Fielding
+    inner join Pitching on (pitching.playerID = Fielding.playerID)
+    where pos != 'OF'
+  ) field
+  ON (field.playerID = awards.playerID)
+  WHERE awards.yearID = field.yearID
+  AND awards.playerID = field.playerID
+  group by field.pos;
+
+```
+
+
 
 Calculate the number of MVPs and Triple Crown winners by team ever in major league baseball.
 
-Calculate the average batting average, RBIs, and home runs by position ever in major league baseball. Only consider seasons where a player had at least 300 at-bats (AB).
+```sql
+  # MVP and Triple Crown winners by team
+  select
+     field.teamID,
+    count(awards.awardID)
+  from (
+    select * from AwardsPlayers
+    where awardid = "Triple Crown"
+    OR awardid = 'MVP'
+  ) awards
+  join  (
+    select  distinct * from  Fielding where pos != 'OF'
+  ) field ON (field.playerID = awards.playerID)
+  WHERE awards.yearID = field.yearID
+  AND awards.playerID = field.playerID
+  group by  field.teamID;
 
++--------+-----------------------+
+| teamID | count(awards.awardID) |
++--------+-----------------------+
+| ANA    |                     2 |
+| ARI    |                     1 |
+| ATL    |                     9 |
+| BAL    |                    10 |
+| BOS    |                    18 |
+| BRO    |                     9 |
+| BSN    |                     6 |
+| CAL    |                     4 |
+| CHA    |                     7 |
+| CHN    |                    11 |
+| CIN    |                    24 |
+| CLE    |                     7 |
+| COL    |                     4 |
+| DET    |                     8 |
+| HOU    |                     2 |
+| KCA    |                     2 |
+| LAN    |                     8 |
+| LS2    |                     1 |
+| MIN    |                    11 |
+| ML1    |                     2 |
+| ML4    |                     5 |
+| NY1    |                     8 |
+| NYA    |                    34 |
+| NYN    |                     1 |
+| OAK    |                    12 |
+| PHA    |                    15 |
+| PHI    |                    10 |
+| PIT    |                     9 |
+| PRO    |                     5 |
+| SDN    |                     2 |
+| SEA    |                     5 |
+| SFN    |                    17 |
+| SLA    |                     1 |
+| SLN    |                    24 |
+| TEX    |                    11 |
+| TOR    |                     6 |
+| WS1    |                     7 |
++--------+-----------------------+
+
+```
+
+Calculate the average batting average, RBIs, and home runs by position ever in major league baseball. Only consider seasons where a player had at least 300 at-bats (AB).
+```sql
+
+ select
+    field.pos,
+    sum(bat.h / bat.AB) AS batting_average,
+    bat.hr,
+    bat.rbi
+  from (
+
+  ) awards
+  join  (
+    select  distinct * from  Fielding where pos != 'OF'
+  ) field ON (field.playerID = awards.playerID)
+  WHERE
+
+  group by  field.pos;
+
+
+
+### above
+select
+  bat.yearID,
+  awards.awardID,
+  players.nameFirst,
+  players.nameLast,
+  sum(bat.h / bat.AB) AS batting_average,
+  bat.hr,
+  bat.rbi
+from Master players
+JOIN AwardsPlayers awards ON (players.playerID = awards.playerID)
+JOIN Batting bat ON (bat.playerID = players.playerID)
+WHERE awards.awardID = "Triple Crown" AND awards.yearID = bat.yearID AND  bat.ab >= 502
+GROUP BY players.playerID, bat.yearID
+ORDER BY bat.rbi DESC;
+
+
+
+
+```
 Return all player info for all players that won an MVP and a Gold Glove during their careers, along with the number of times they won each.
 
 Calculate the number of world series, division titles, and league championships for all teams.
