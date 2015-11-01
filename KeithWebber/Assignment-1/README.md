@@ -49,9 +49,9 @@ Use the appropriate SQL queries to find answers to the following questions:
 
 ```
 
-  ```sql
-  # Ordered by RBI
-  # All TC winners excluding pitchers ordered by at rbi, additional complete stats omitted for brevity
+```sql
+# Ordered by RBI
+# All TC winners excluding pitchers ordered by at rbi, additional complete stats omitted for brevity
   select
     bat.yearID,
     awards.awardID,
@@ -88,9 +88,9 @@ Use the appropriate SQL queries to find answers to the following questions:
   +--------+--------------+-----------+-------------+-----------------+------+------+
   ```
 
-  ```sql
-  # Ordered by Home Runs
-  # All TC winners excluding pitchers ordered by at rbi, additional complete stats omitted for brevity
+```sql
+# Ordered by Home Runs
+# All TC winners excluding pitchers ordered by at rbi, additional complete stats omitted for brevity
   select
     bat.yearID,
     awards.awardID,
@@ -129,8 +129,8 @@ Use the appropriate SQL queries to find answers to the following questions:
 
 
 ```
-  ```sql
-  # All players winners based on batting statistics
+```sql
+# All players winners based on batting statistics
   select
     players.nameFirst,
     players.nameLast,
@@ -174,8 +174,8 @@ Use the appropriate SQL queries to find answers to the following questions:
 
 ### 2) Calculate the number of MVPs and Triple Crown winners by position ever in major league baseball.
 ```sql
-##### Triple Crown's only - illustrate off by position issue
-#     some double counting from having pitchers in there technically
+# Triple Crown's only - illustrate off by position issue
+# some double counting from having pitchers in there technically
    select
       field.pos,
      count(awards.awardID)
@@ -187,7 +187,7 @@ Use the appropriate SQL queries to find answers to the following questions:
    ) field ON (field.playerID = awards.playerID)
    WHERE awards.yearID = field.yearID
    AND awards.playerID = field.playerID
-   group by  field.pos;
+   group by  field.pos, awards.awardid;
    +-----+-----------------------+
    | pos | count(awards.awardID) |
    +-----+-----------------------+
@@ -206,7 +206,7 @@ Use the appropriate SQL queries to find answers to the following questions:
 # Needs improvements
 
 ```sql
-  # need to remove the pitching at bats
+# need to remove the pitching at bats
   select
     field.pos,
     count(*)
@@ -233,10 +233,10 @@ Use the appropriate SQL queries to find answers to the following questions:
 ### 3) Calculate the number of MVPs and Triple Crown winners by team ever in major league baseball.
 
 ```sql
-  # MVP and Triple Crown winners by team
+# MVP and Triple Crown winners by team
   select
      field.teamID,
-    count(awards.awardID)
+    count(awards.awardID) as "MVP/TripleCrown"
   from (
     select * from AwardsPlayers
     where awardid = "Triple Crown"
@@ -249,86 +249,81 @@ Use the appropriate SQL queries to find answers to the following questions:
   AND awards.playerID = field.playerID
   group by  field.teamID;
 
-+--------+-----------------------+
-| teamID | count(awards.awardID) |
-+--------+-----------------------+
-| ANA    |                     2 |
-| ARI    |                     1 |
-| ATL    |                     9 |
-| BAL    |                    10 |
-| BOS    |                    18 |
-| BRO    |                     9 |
-| BSN    |                     6 |
-| CAL    |                     4 |
-| CHA    |                     7 |
-| CHN    |                    11 |
-| CIN    |                    24 |
-| CLE    |                     7 |
-| COL    |                     4 |
-| DET    |                     8 |
-| HOU    |                     2 |
-| KCA    |                     2 |
-| LAN    |                     8 |
-| LS2    |                     1 |
-| MIN    |                    11 |
-| ML1    |                     2 |
-| ML4    |                     5 |
-| NY1    |                     8 |
-| NYA    |                    34 |
-| NYN    |                     1 |
-| OAK    |                    12 |
-| PHA    |                    15 |
-| PHI    |                    10 |
-| PIT    |                     9 |
-| PRO    |                     5 |
-| SDN    |                     2 |
-| SEA    |                     5 |
-| SFN    |                    17 |
-| SLA    |                     1 |
-| SLN    |                    24 |
-| TEX    |                    11 |
-| TOR    |                     6 |
-| WS1    |                     7 |
-+--------+-----------------------+
-
+  +--------+-----------------+
+  | teamID | MVP/TripleCrown |
+  +--------+-----------------+
+  | ANA    |               2 |
+  | ARI    |               1 |
+  | ATL    |               9 |
+  | BAL    |              10 |
+  | BOS    |              18 |
+  | BRO    |               9 |
+  | BSN    |               6 |
+  | CAL    |               4 |
+  | CHA    |               7 |
+  | CHN    |              11 |
+  | CIN    |              24 |
+  | CLE    |               7 |
+  | COL    |               4 |
+  | DET    |               8 |
+  | HOU    |               2 |
+  | KCA    |               2 |
+  | LAN    |               8 |
+  | LS2    |               1 |
+  | MIN    |              11 |
+  | ML1    |               2 |
+  | ML4    |               5 |
+  | NY1    |               8 |
+  | NYA    |              34 |
+  | NYN    |               1 |
+  | OAK    |              12 |
+  | PHA    |              15 |
+  | PHI    |              10 |
+  | PIT    |               9 |
+  | PRO    |               5 |
+  | SDN    |               2 |
+  | SEA    |               5 |
+  | SFN    |              17 |
+  | SLA    |               1 |
+  | SLN    |              24 |
+  | TEX    |              11 |
+  | TOR    |               6 |
+  | WS1    |               7 |
+  +--------+-----------------+
 ```
 
 ### 4) Calculate the average batting average, RBIs, and home runs by position ever in major league baseball. Only consider seasons where a player had at least 300 at-bats (AB).
 ```sql
 
- select
-    field.pos,
-    sum(bat.h / bat.AB) AS batting_average,
-    bat.hr,
-    bat.rbi
-  from (
-
-  ) awards
-  join  (
-    select  distinct * from  Fielding where pos != 'OF'
-  ) field ON (field.playerID = awards.playerID)
-  WHERE
-
-  group by  field.pos;
-
-
 
 ### above
-select
-  bat.yearID,
-  awards.awardID,
-  players.nameFirst,
-  players.nameLast,
-  sum(bat.h / bat.AB) AS batting_average,
-  bat.hr,
-  bat.rbi
-from Master players
-JOIN AwardsPlayers awards ON (players.playerID = awards.playerID)
-JOIN Batting bat ON (bat.playerID = players.playerID)
-WHERE awards.awardID = "Triple Crown" AND awards.yearID = bat.yearID AND  bat.ab >= 502
-GROUP BY players.playerID, bat.yearID
-ORDER BY bat.rbi DESC;
-
+  select
+    fielding.pos,
+    AVG(bat.h / bat.AB) AS batting_average,
+    AVG(bat.hr) AS Average_HomeRuns,
+    AVG(bat.rbi) AS Average_RBI
+  from Master players
+  JOIN fielding ON (players.playerID = fielding.playerID)
+  JOIN Batting bat ON (bat.playerID = players.playerID)
+  WHERE bat.ab >= 301
+  GROUP BY fielding.pos
+  ORDER BY bat.rbi DESC;
+  +-----+-----------------+------------------+-------------+
+  | pos | batting_average | Average_HomeRuns | Average_RBI |
+  +-----+-----------------+------------------+-------------+
+  | P   |      0.28330651 |           6.1980 |     60.4212 |
+  | OF  |      0.28346289 |          12.2007 |     64.9105 |
+  | CF  |      0.27568416 |          14.1634 |     61.3736 |
+  | DH  |      0.27807213 |          17.2563 |     70.2555 |
+  | 2B  |      0.27309667 |           6.4783 |     53.5728 |
+  | LF  |      0.27610233 |          15.2329 |     64.4096 |
+  | 3B  |      0.27303266 |           9.9283 |     60.5570 |
+  | RF  |      0.27630439 |          16.0473 |     66.5444 |
+  | 1B  |      0.28249574 |          13.6744 |     70.6064 |
+  | SS  |      0.26798584 |           6.5790 |     53.6738 |
+  | C   |      0.27074001 |           9.2821 |     56.3062 |
+  +-----+-----------------+------------------+-------------+
+  11 rows in set (1.84 sec)
 
 
 
