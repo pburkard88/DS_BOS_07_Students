@@ -429,9 +429,9 @@ group by  series.teamIDwinner;
 
 
 
-## iterate
+## Might want to stich part 1 with part 2
 
-select teams.teamID, coalesce(lg_wins,0), coalesce(ws_wins, 0), coalesce(div_wins,0) from teams
+select teams.name, coalesce(lg_wins,0), coalesce(ws_wins, 0), coalesce(div_wins,0) from teams
 left outer Join (
   SELECT teamid, count(*) AS ws_wins FROM teams
   WHERE WSWin = 'Y'
@@ -441,22 +441,95 @@ on (ws_winners.teamid = teams.teamid)
  left outer Join (
   SELECT teamid, count(*) AS div_wins FROM teams
   WHERE DivWin = 'y'
-  OR WCWin = 'y'
   group by teamid
 ) div_winners
 on (teams.teamid = div_winners.teamid)
  left outer Join (
   SELECT teamid, count(*) AS lg_wins FROM teams
   WHERE LgWin = 'y'
+  OR WCWin = 'y'
   group by teamid
 ) lg_winners
 on (teams.teamid = div_winners.teamid)
 WHERE lg_wins IS NOT NULL
  OR ws_wins IS NOT NULL
  OR div_wins IS NOT NULL
-group by teams.teamid;
+group by teams.name
+order by teams.name;
 
 
++-------------------------------+---------------------+----------------------+----------------------+
+| name                          | coalesce(lg_wins,0) | coalesce(ws_wins, 0) | coalesce(div_wins,0) |
++-------------------------------+---------------------+----------------------+----------------------+
+| Anaheim Angels                |                   1 |                    1 |                    1 |
+| Arizona Diamondbacks          |                   1 |                    1 |                    4 |
+| Atlanta Braves                |                   1 |                    1 |                   16 |
+| Baltimore Orioles             |                   1 |                    3 |                    8 |
+| Boston Americans              |                   1 |                    7 |                    6 |
+| Boston Beaneaters             |                   0 |                    1 |                    0 |
+| Boston Bees                   |                   0 |                    1 |                    0 |
+| Boston Braves                 |                   0 |                    1 |                    0 |
+| Boston Doves                  |                   0 |                    1 |                    0 |
+| Boston Red Caps               |                   0 |                    1 |                    0 |
+| Boston Red Sox                |                   1 |                    7 |                    6 |
+| Boston Rustlers               |                   0 |                    1 |                    0 |
+| Brooklyn Bridegrooms          |                   0 |                    1 |                    0 |
+| Brooklyn Dodgers              |                   0 |                    1 |                    0 |
+| Brooklyn Grooms               |                   0 |                    1 |                    0 |
+| Brooklyn Robins               |                   0 |                    1 |                    0 |
+| Brooklyn Superbas             |                   0 |                    1 |                    0 |
+| California Angels             |                   1 |                    0 |                    3 |
+| Chicago Colts                 |                   1 |                    2 |                    5 |
+| Chicago Cubs                  |                   1 |                    2 |                    5 |
+| Chicago Orphans               |                   1 |                    2 |                    5 |
+| Chicago White Sox             |                   1 |                    3 |                    5 |
+| Chicago White Stockings       |                   1 |                    2 |                    5 |
+| Cincinnati Redlegs            |                   1 |                    5 |                    8 |
+| Cincinnati Reds               |                   1 |                    5 |                    8 |
+| Cleveland Blues               |                   1 |                    2 |                    7 |
+| Cleveland Bronchos            |                   1 |                    2 |                    7 |
+| Cleveland Indians             |                   1 |                    2 |                    7 |
+| Cleveland Naps                |                   1 |                    2 |                    7 |
+| Detroit Tigers                |                   1 |                    4 |                    3 |
+| Detroit Wolverines            |                   0 |                    1 |                    0 |
+| Florida Marlins               |                   0 |                    2 |                    0 |
+| Houston Astros                |                   1 |                    0 |                    7 |
+| Houston Colt .45s             |                   1 |                    0 |                    7 |
+| Kansas City Royals            |                   1 |                    1 |                    7 |
+| Los Angeles Angels            |                   1 |                    0 |                    4 |
+| Los Angeles Angels of Anaheim |                   1 |                    0 |                    4 |
+| Los Angeles Dodgers           |                   1 |                    5 |                   11 |
+| Milwaukee Braves              |                   0 |                    1 |                    0 |
+| Milwaukee Brewers             |                   1 |                    0 |                    2 |
+| Minnesota Twins               |                   1 |                    2 |                    9 |
+| Montreal Expos                |                   1 |                    0 |                    1 |
+| New York Giants               |                   0 |                    7 |                    0 |
+| New York Gothams              |                   0 |                    7 |                    0 |
+| New York Highlanders          |                   1 |                   27 |                   16 |
+| New York Mets                 |                   1 |                    2 |                    5 |
+| New York Yankees              |                   1 |                   27 |                   16 |
+| Oakland Athletics             |                   1 |                    4 |                   14 |
+| Philadelphia Athletics        |                   0 |                    5 |                    0 |
+| Philadelphia Blue Jays        |                   1 |                    2 |                   10 |
+| Philadelphia Phillies         |                   1 |                    2 |                   10 |
+| Philadelphia Quakers          |                   1 |                    2 |                   10 |
+| Pittsburg Alleghenys          |                   1 |                    5 |                    9 |
+| Pittsburgh Pirates            |                   1 |                    5 |                    9 |
+| Providence Grays              |                   0 |                    1 |                    0 |
+| San Diego Padres              |                   1 |                    0 |                    5 |
+| San Francisco Giants          |                   1 |                    0 |                    6 |
+| Seattle Mariners              |                   1 |                    0 |                    3 |
+| St. Louis Brown Stockings     |                   0 |                    1 |                    0 |
+| St. Louis Browns              |                   1 |                   10 |                   10 |
+| St. Louis Cardinals           |                   1 |                   10 |                   10 |
+| St. Louis Perfectos           |                   1 |                   10 |                   10 |
+| Tampa Bay Devil Rays          |                   1 |                    0 |                    1 |
+| Tampa Bay Rays                |                   1 |                    0 |                    1 |
+| Texas Rangers                 |                   1 |                    0 |                    3 |
+| Toronto Blue Jays             |                   1 |                    2 |                    5 |
+| Washington Senators           |                   0 |                    1 |                    0 |
++-------------------------------+---------------------+----------------------+----------------------+
+67 rows in set (0.05 sec)
 
 
 
