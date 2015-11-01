@@ -293,10 +293,9 @@ Use the appropriate SQL queries to find answers to the following questions:
 ```
 
 ### 4) Calculate the average batting average, RBIs, and home runs by position ever in major league baseball. Only consider seasons where a player had at least 300 at-bats (AB).
+
 ```sql
-
-
-### above
+# Average batting average, RBIs, and home runs by position across MLB.
   select
     fielding.pos,
     AVG(bat.h / bat.AB) AS batting_average,
@@ -324,11 +323,80 @@ Use the appropriate SQL queries to find answers to the following questions:
   | C   |      0.27074001 |           9.2821 |     56.3062 |
   +-----+-----------------+------------------+-------------+
   11 rows in set (1.84 sec)
-
-
-
 ```
 ### 5) Return all player info for all players that won an MVP and a Gold Glove during their careers, along with the number of times they won each.
+
+```sql
+# returning all the players that have won both gold glove and MVP
+  select  players.nameFirst, players.nameLast , gg_wins, mvp_wins from (
+    SELECT playerID, count(*) AS gg_wins FROM awardsplayers
+    WHERE awardID = 'Gold Glove'
+    group by playerID
+   )awards
+  inner join (
+    SELECT playerID, count(*) AS mvp_wins FROM awardsplayers awards2
+    WHERE awards2.awardID = 'MVP'
+    group by playerID
+  ) awards2
+  on (awards.playerid = awards2.playerid)
+  join Master players ON (awards.playerID = players.playerID)
+  group by  awards.playerid;
+  +-----------+-------------+---------+----------+
+  | nameFirst | nameLast    | gg_wins | mvp_wins |
+  +-----------+-------------+---------+----------+
+  | Hank      | Aaron       |       3 |        1 |
+  | Jeff      | Bagwell     |       1 |        1 |
+  | Ernie     | Banks       |       1 |        2 |
+  | Johnny    | Bench       |      10 |        2 |
+  | Barry     | Bonds       |       8 |        7 |
+  | Ken       | Boyer       |       5 |        1 |
+  | George    | Brett       |       1 |        1 |
+  | Ken       | Caminiti    |       3 |        1 |
+  | Roberto   | Clemente    |      12 |        1 |
+  | Andre     | Dawson      |       8 |        1 |
+  | Nellie    | Fox         |       3 |        1 |
+  | Steve     | Garvey      |       4 |        1 |
+  | Bob       | Gibson      |       9 |        1 |
+  | Ken       | Griffey     |      10 |        1 |
+  | Rickey    | Henderson   |       1 |        1 |
+  | Keith     | Hernandez   |      11 |        1 |
+  | Elston    | Howard      |       2 |        1 |
+  | Jackie    | Jensen      |       1 |        1 |
+  | Barry     | Larkin      |       3 |        1 |
+  | Fred      | Lynn        |       4 |        1 |
+  | Mickey    | Mantle      |       1 |        3 |
+  | Roger     | Maris       |       1 |        2 |
+  | Don       | Mattingly   |       9 |        1 |
+  | Joe       | Mauer       |       2 |        1 |
+  | Willie    | Mays        |      12 |        2 |
+  | Willie    | McGee       |       3 |        1 |
+  | Joe       | Morgan      |       5 |        2 |
+  | Thurman   | Munson      |       3 |        1 |
+  | Dale      | Murphy      |       5 |        2 |
+  | Dave      | Parker      |       3 |        1 |
+  | Dustin    | Pedroia     |       1 |        1 |
+  | Terry     | Pendleton   |       3 |        1 |
+  | Albert    | Pujols      |       1 |        3 |
+  | Cal       | Ripken      |       2 |        2 |
+  | Brooks    | Robinson    |      16 |        1 |
+  | Frank     | Robinson    |       1 |        2 |
+  | Alex      | Rodriguez   |       2 |        3 |
+  | Ivan      | Rodriguez   |      13 |        1 |
+  | Jimmy     | Rollins     |       3 |        1 |
+  | Pete      | Rose        |       2 |        1 |
+  | Ryne      | Sandberg    |       9 |        1 |
+  | Mike      | Schmidt     |      10 |        3 |
+  | Bobby     | Shantz      |       8 |        1 |
+  | Ichiro    | Suzuki      |       9 |        1 |
+  | Joe       | Torre       |       1 |        1 |
+  | Zoilo     | Versalles   |       2 |        1 |
+  | Larry     | Walker      |       7 |        1 |
+  | Maury     | Wills       |       2 |        1 |
+  | Carl      | Yastrzemski |       7 |        1 |
+  | Robin     | Yount       |       1 |        2 |
+  +-----------+-------------+---------+----------+
+  50 rows in set (0.01 sec)
+```
 
 ### 6) Calculate the number of world series, division titles, and league championships for all teams.
 
