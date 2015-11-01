@@ -130,20 +130,6 @@ Use the appropriate SQL queries to find answers to the following questions:
 
 ```
 ```sql
-# All players winners based on batting statistics
-  select
-    players.nameFirst,
-    players.nameLast,
-    sum(bat.h / bat.AB) AS batting_average,
-    bat.hr AS homeruns,
-    bat.rbi AS RBI
-  from Master players
-  JOIN Batting bat ON (bat.playerID = players.playerID)
-  WHERE bat.playerID = (SELECT playerID from batting WHERE MAX(rbi) GROUP BY bat.yearID)
-  GROUP BY (bat.yearID)
-  ORDER BY bat.rbi  ASC ;
-```
-```sql
 # mussings on how to calcluate the winners from tables
   select
     bat.yearID,
@@ -228,10 +214,7 @@ Use the appropriate SQL queries to find answers to the following questions:
 
 ```
 
-
-
 ### 3) Calculate the number of MVPs and Triple Crown winners by team ever in major league baseball.
-
 ```sql
 # MVP and Triple Crown winners by team
   select
@@ -293,7 +276,6 @@ Use the appropriate SQL queries to find answers to the following questions:
 ```
 
 ### 4) Calculate the average batting average, RBIs, and home runs by position ever in major league baseball. Only consider seasons where a player had at least 300 at-bats (AB).
-
 ```sql
 # Average batting average, RBIs, and home runs by position across MLB.
   select
@@ -324,6 +306,7 @@ Use the appropriate SQL queries to find answers to the following questions:
   +-----+-----------------+------------------+-------------+
   11 rows in set (1.84 sec)
 ```
+
 ### 5) Return all player info for all players that won an MVP and a Gold Glove during their careers, along with the number of times they won each.
 
 ```sql
@@ -399,6 +382,88 @@ Use the appropriate SQL queries to find answers to the following questions:
 ```
 
 ### 6) Calculate the number of world series, division titles, and league championships for all teams.
+```sql
+select  teams.name, ws_wins, lg_wins, div_wins from SeriesPost series
+inner Join (
+  SELECT teamIDwinner, count(*) AS ws_wins FROM SeriesPost
+  WHERE round = 'WS'
+  group by teamIDwinner
+) ws_winners
+on (ws_winners.teamIDwinner = series.teamIDwinner)
+inner join (
+  SELECT teamIDwinner, count(*) AS div_wins FROM SeriesPost
+  WHERE round IN ('NLDS2','NLDS1','ALDS1','ALDS2','AEDIV','AWDIV','NEDIV','NWDIV')
+  group by teamIDwinner
+) div_winners
+on (ws_winners.teamIDwinner = div_winners.teamIDwinner)
+inner join (
+  SELECT teamIDwinner, count(*) AS lg_wins FROM SeriesPost
+  WHERE round IN ('NLCS','ALCS')
+  group by teamIDwinner
+) lg_winners
+on (ws_winners.teamIDwinner = lg_winners.teamIDwinner)
+join teams on (series.teamIDwinner = teams.teamid)
+group by  series.teamIDwinner;
++----------------------+---------+---------+----------+
+| name                 | ws_wins | lg_wins | div_wins |
++----------------------+---------+---------+----------+
+| Anaheim Angels       |       1 |       1 |        1 |
+| Arizona Diamondbacks |       1 |       1 |        2 |
+| Atlanta Braves       |       1 |       5 |        6 |
+| Baltimore Orioles    |       3 |       5 |        2 |
+| Boston Americans     |       7 |       4 |        5 |
+| Chicago White Sox    |       3 |       1 |        1 |
+| Cincinnati Reds      |       5 |       5 |        1 |
+| Cleveland Blues      |       2 |       2 |        4 |
+| Detroit Tigers       |       4 |       2 |        1 |
+| Florida Marlins      |       2 |       2 |        2 |
+| Los Angeles Dodgers  |       5 |       5 |        3 |
+| Minnesota Twins      |       2 |       2 |        1 |
+| New York Highlanders |      27 |      11 |        9 |
+| New York Mets        |       2 |       4 |        3 |
+| Oakland Athletics    |       4 |       6 |        2 |
+| Philadelphia Quakers |       2 |       5 |        2 |
+| St. Louis Browns     |      10 |       5 |        6 |
++----------------------+---------+---------+----------+
+
+
+
+
+## iterate
+
+select teams.teamID, coalesce(lg_wins,0), coalesce(ws_wins, 0), coalesce(div_wins,0) from teams
+left outer Join (
+  SELECT teamid, count(*) AS ws_wins FROM teams
+  WHERE WSWin = 'Y'
+  group by teamid
+) ws_winners
+on (ws_winners.teamid = teams.teamid)
+ left outer Join (
+  SELECT teamid, count(*) AS div_wins FROM teams
+  WHERE DivWin = 'y'
+  OR WCWin = 'y'
+  group by teamid
+) div_winners
+on (teams.teamid = div_winners.teamid)
+ left outer Join (
+  SELECT teamid, count(*) AS lg_wins FROM teams
+  WHERE LgWin = 'y'
+  group by teamid
+) lg_winners
+on (teams.teamid = div_winners.teamid)
+WHERE lg_wins IS NOT NULL
+ OR ws_wins IS NOT NULL
+ OR div_wins IS NOT NULL
+group by teams.teamid;
+
+
+
+
+
+```
+
+
+
 
 ### 7) Calculate the average salary (as a percentage of yearly average) of all MVPs ever in major league baseball.
 
