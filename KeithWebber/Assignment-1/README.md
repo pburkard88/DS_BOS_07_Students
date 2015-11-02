@@ -8,8 +8,10 @@ Use the appropriate SQL queries to find answers to the following questions:
 ### 1) Find all of the Triple Crown (Award) winners ever in Major League Baseball, with their complete batting stats for the given year. Order the results in descending order first by batting average, then by RBIs, and lastly by home runs.
 
 ```sql
-# Ordered by Batting Average
-# All TC winners excluding pitchers ordered by at rbi, additional complete stats omitted for brevity
+# All TC winners excluding pitchers ordered by at rbi,
+# Additional complete stats omitted for brevity
+
+# BATTING BY BATTING AVERAGE
   select
     bat.yearID,
     awards.awardID,
@@ -45,6 +47,139 @@ Use the appropriate SQL queries to find answers to the following questions:
   |   1966 | Triple Crown | Frank     | Robinson    |          0.3160 |   49 |  122 |
   +--------+--------------+-----------+-------------+-----------------+------+------+
   15 rows in set (0.00 sec)
+
+# PITCHERS BY ERA
+  select
+    pitch.yearID,
+    awards.awardID,
+    players.nameFirst,
+    players.nameLast,
+    pitch.w,
+    pitch.l,
+    pitch.era,
+    pitch.SO
+  from Master players
+  JOIN AwardsPlayers awards ON (players.playerID = awards.playerID)
+  JOIN pitching pitch ON (pitch.playerID = players.playerID)
+  WHERE awards.awardID = "Triple Crown" AND awards.yearID = pitch.yearID
+  GROUP BY players.playerID, pitch.yearID
+  ORDER BY pitch.era DESC;
+
+  +--------+--------------+-----------+-----------+------+------+------+------+
+  | yearID | awardID      | nameFirst | nameLast  | w    | l    | era  | SO   |
+  +--------+--------------+-----------+-----------+------+------+------+------+
+  |   1894 | Triple Crown | Amos      | Rusie     |   36 |   13 | 2.78 |  195 |
+  |   2006 | Triple Crown | Johan     | Santana   |   19 |    6 | 2.77 |  245 |
+  |   1889 | Triple Crown | John      | Clarkson  |   49 |   19 | 2.73 |  284 |
+  |   1924 | Triple Crown | Walter    | Johnson   |   23 |    7 | 2.72 |  158 |
+  |   1998 | Triple Crown | Roger     | Clemens   |   20 |    6 | 2.65 |  271 |
+  |   1940 | Triple Crown | Bob       | Feller    |   27 |   11 | 2.61 |  261 |
+  |   1930 | Triple Crown | Lefty     | Grove     |   28 |    5 | 2.54 |  209 |
+  |   2007 | Triple Crown | Jake      | Peavy     |   19 |    6 | 2.54 |  240 |
+  |   1934 | Triple Crown | Lefty     | Gomez     |   26 |    5 | 2.33 |  158 |
+  |   1937 | Triple Crown | Lefty     | Gomez     |   21 |   11 | 2.33 |  194 |
+  |   2002 | Triple Crown | Randy     | Johnson   |   24 |    5 | 2.32 |  334 |
+  |   1939 | Triple Crown | Bucky     | Walters   |   27 |   11 | 2.29 |  137 |
+  |   1924 | Triple Crown | Dazzy     | Vance     |   28 |    6 | 2.16 |  262 |
+  |   1877 | Triple Crown | Tommy     | Bond      |   40 |   17 | 2.11 |  170 |
+  |   1999 | Triple Crown | Pedro     | Martinez  |   23 |    4 | 2.07 |  313 |
+  |   1931 | Triple Crown | Lefty     | Grove     |   31 |    4 | 2.06 |  175 |
+  |   1997 | Triple Crown | Roger     | Clemens   |   21 |    7 | 2.05 |  292 |
+  |   1965 | Triple Crown | Sandy     | Koufax    |   26 |    8 | 2.04 |  382 |
+  |   1972 | Triple Crown | Steve     | Carlton   |   27 |   10 | 1.97 |  310 |
+  |   1920 | Triple Crown | Pete      | Alexander |   27 |   14 | 1.91 |  173 |
+  |   1963 | Triple Crown | Sandy     | Koufax    |   25 |    5 | 1.88 |  306 |
+  |   1945 | Triple Crown | Hal       | Newhouser |   25 |    9 | 1.81 |  212 |
+  |   1884 | Triple Crown | Guy       | Hecker    |   52 |   20 | 1.80 |  385 |
+  |   1918 | Triple Crown | Hippo     | Vaughn    |   22 |   10 | 1.74 |  148 |
+  |   1888 | Triple Crown | Tim       | Keefe     |   35 |   12 | 1.74 |  335 |
+  |   1966 | Triple Crown | Sandy     | Koufax    |   27 |    9 | 1.73 |  317 |
+  |   1901 | Triple Crown | Cy        | Young     |   33 |   10 | 1.62 |  158 |
+  |   1916 | Triple Crown | Pete      | Alexander |   33 |   12 | 1.55 |  167 |
+  |   1985 | Triple Crown | Dwight    | Gooden    |   24 |    4 | 1.53 |  268 |
+  |   1905 | Triple Crown | Rube      | Waddell   |   27 |   10 | 1.48 |  287 |
+  |   1908 | Triple Crown | Christy   | Mathewson |   37 |   11 | 1.43 |  259 |
+  |   1884 | Triple Crown | Charley   | Radbourn  |   59 |   12 | 1.38 |  441 |
+  |   1905 | Triple Crown | Christy   | Mathewson |   31 |    9 | 1.28 |  206 |
+  |   1918 | Triple Crown | Walter    | Johnson   |   23 |   13 | 1.27 |  162 |
+  |   1915 | Triple Crown | Pete      | Alexander |   31 |   10 | 1.22 |  241 |
+  |   1913 | Triple Crown | Walter    | Johnson   |   36 |    7 | 1.14 |  243 |
+  +--------+--------------+-----------+-----------+------+------+------+------+
+  36 rows in set (0.00 sec)
+
+# Think this less interesting since it does not have the most important data, but for completeness:
+  select
+    bat.yearID,
+    awards.awardID,
+    players.nameFirst,
+    players.nameLast,
+    sum(bat.h / bat.AB) AS batting_average,
+    bat.hr,
+    bat.rbi
+  from Master players
+  JOIN AwardsPlayers awards ON (players.playerID = awards.playerID)
+  JOIN Batting bat ON (bat.playerID = players.playerID)
+  WHERE awards.awardID = "Triple Crown" AND awards.yearID = bat.yearID
+  GROUP BY players.playerID, bat.yearID
+  ORDER BY batting_average DESC;
+  +--------+--------------+-----------+-------------+-----------------+------+------+
+  | yearID | awardID      | nameFirst | nameLast    | batting_average | hr   | rbi  |
+  +--------+--------------+-----------+-------------+-----------------+------+------+
+  |   1997 | Triple Crown | Roger     | Clemens     |          0.5000 |    0 |    0 |
+  |   1894 | Triple Crown | Hugh      | Duffy       |          0.4397 |   18 |  145 |
+  |   1887 | Triple Crown | Tip       | O''Neill    |          0.4352 |   14 |  123 |
+  |   1901 | Triple Crown | Nap       | Lajoie      |          0.4265 |   14 |  125 |
+  |   1925 | Triple Crown | Rogers    | Hornsby     |          0.4028 |   39 |  143 |
+  |   1922 | Triple Crown | Rogers    | Hornsby     |          0.4013 |   42 |  152 |
+  |   1909 | Triple Crown | Ty        | Cobb        |          0.3770 |    9 |  107 |
+  |   1937 | Triple Crown | Joe       | Medwick     |          0.3744 |   31 |  154 |
+  |   1933 | Triple Crown | Chuck     | Klein       |          0.3680 |   28 |  120 |
+  |   1934 | Triple Crown | Lou       | Gehrig      |          0.3627 |   49 |  165 |
+  |   1878 | Triple Crown | Paul      | Hines       |          0.3580 |    4 |   50 |
+  |   1942 | Triple Crown | Ted       | Williams    |          0.3563 |   36 |  137 |
+  |   1933 | Triple Crown | Jimmie    | Foxx        |          0.3560 |   48 |  163 |
+  |   1956 | Triple Crown | Mickey    | Mantle      |          0.3527 |   52 |  130 |
+  |   1947 | Triple Crown | Ted       | Williams    |          0.3428 |   32 |  114 |
+  |   1967 | Triple Crown | Carl      | Yastrzemski |          0.3264 |   44 |  121 |
+  |   1939 | Triple Crown | Bucky     | Walters     |          0.3250 |    1 |   16 |
+  |   1966 | Triple Crown | Frank     | Robinson    |          0.3160 |   49 |  122 |
+  |   1884 | Triple Crown | Guy       | Hecker      |          0.2975 |    4 |   42 |
+  |   1924 | Triple Crown | Walter    | Johnson     |          0.2832 |    1 |   14 |
+  |   1894 | Triple Crown | Amos      | Rusie       |          0.2796 |    3 |   26 |
+  |   1918 | Triple Crown | Walter    | Johnson     |          0.2667 |    1 |   18 |
+  |   1913 | Triple Crown | Walter    | Johnson     |          0.2612 |    2 |   14 |
+  |   1945 | Triple Crown | Hal       | Newhouser   |          0.2569 |    0 |   17 |
+  |   1918 | Triple Crown | Hippo     | Vaughn      |          0.2396 |    0 |    8 |
+  |   1916 | Triple Crown | Pete      | Alexander   |          0.2391 |    0 |    9 |
+  |   1905 | Triple Crown | Christy   | Mathewson   |          0.2362 |    2 |   16 |
+  |   2007 | Triple Crown | Jake      | Peavy       |          0.2329 |    0 |    7 |
+  |   1884 | Triple Crown | Charley   | Radbourn    |          0.2299 |    1 |   37 |
+  |   1920 | Triple Crown | Pete      | Alexander   |          0.2288 |    1 |   14 |
+  |   1877 | Triple Crown | Tommy     | Bond        |          0.2278 |    0 |   30 |
+  |   1985 | Triple Crown | Dwight    | Gooden      |          0.2258 |    1 |    9 |
+  |   1901 | Triple Crown | Cy        | Young       |          0.2092 |    0 |   17 |
+  |   1889 | Triple Crown | John      | Clarkson    |          0.2061 |    2 |   23 |
+  |   1930 | Triple Crown | Lefty     | Grove       |          0.2000 |    2 |   17 |
+  |   1937 | Triple Crown | Lefty     | Gomez       |          0.2000 |    0 |    4 |
+  |   1931 | Triple Crown | Lefty     | Grove       |          0.2000 |    0 |   12 |
+  |   1972 | Triple Crown | Steve     | Carlton     |          0.1966 |    1 |    8 |
+  |   1965 | Triple Crown | Sandy     | Koufax      |          0.1770 |    0 |    7 |
+  |   1905 | Triple Crown | Rube      | Waddell     |          0.1724 |    0 |   10 |
+  |   1915 | Triple Crown | Pete      | Alexander   |          0.1692 |    1 |    8 |
+  |   1940 | Triple Crown | Bob       | Feller      |          0.1565 |    2 |   12 |
+  |   1908 | Triple Crown | Christy   | Mathewson   |          0.1550 |    0 |   11 |
+  |   1924 | Triple Crown | Dazzy     | Vance       |          0.1509 |    2 |   11 |
+  |   2002 | Triple Crown | Randy     | Johnson     |          0.1348 |    0 |    8 |
+  |   1934 | Triple Crown | Lefty     | Gomez       |          0.1313 |    0 |    4 |
+  |   1888 | Triple Crown | Tim       | Keefe       |          0.1271 |    2 |    8 |
+  |   1966 | Triple Crown | Sandy     | Koufax      |          0.0763 |    0 |    5 |
+  |   1963 | Triple Crown | Sandy     | Koufax      |          0.0636 |    1 |    7 |
+  |   1998 | Triple Crown | Roger     | Clemens     |          0.0000 |    0 |    0 |
+  |   1999 | Triple Crown | Pedro     | Martinez    |          0.0000 |    0 |    0 |
+  |   2006 | Triple Crown | Johan     | Santana     |          0.0000 |    0 |    0 |
+  +--------+--------------+-----------+-------------+-----------------+------+------+
+  52 rows in set (0.01 sec)
+
 
 
 ```
@@ -166,10 +301,12 @@ Use the appropriate SQL queries to find answers to the following questions:
       field.pos,
      count(awards.awardID)
    from (
-     select * from AwardsPlayers where awardid = "Triple Crown"
+     select * from AwardsPlayers
+     where awardid = "Triple Crown"
    ) awards
    join  (
-     select  distinct * from  Fielding where pos != 'OF'
+     select playerid, pos, yearID  from  Fielding
+     where pos != 'OF'
    ) field ON (field.playerID = awards.playerID)
    WHERE awards.yearID = field.yearID
    AND awards.playerID = field.playerID
@@ -187,9 +324,111 @@ Use the appropriate SQL queries to find answers to the following questions:
    | SS  |                     6 |
    +-----+-----------------------+
 
+
+
+
+   select
+      field.pos,
+     count(awards.awardID)
+   from (
+     select * from AwardsPlayers
+     where awardid = "Triple Crown"
+   ) awards
+   inner join  (
+     select  playerID, pos, MAX(g), yearID from  Fielding
+     group by playerid, yearid
+   ) field ON (field.playerID = awards.playerID)
+   WHERE EXISTS  (
+     select * from  Pitching
+     where field.playerID != Pitching.playerid
+      )
+   and awards.yearID = field.yearID
+   AND awards.playerID = field.playerID
+   group by  field.pos;
+
+
+
+select * from fielding
+join awardsPlayers awards
+on (fielding.playerid = awards.playerid)
+where fielding.pos = "SS" AND awards.awardid = 'Triple Crown'
+
+
+
+
+
+   select
+     field.pos,
+     count(awards.awardID)
+   from (
+     select * from AwardsPlayers
+     where awardid = "Triple Crown"
+   ) awards
+   inner join  (
+     select  playerid, yearid,  pos from  Fielding
+     group by playerid, pos, yearid
+
+   ) field ON (field.playerID = awards.playerID)
+   WHERE not EXISTS  (
+        select * from  Pitching
+        where field.playerID = Pitching.playerid
+      )
+   and (awards.yearID = field.yearID
+   AND awards.playerID = field.playerID)
+   group by  field.pos;
+
+
+
+
+
+
+
+
+
+
+# complete answer with the MVP and TripleCrown
+  select
+     field.pos,
+    count(awards.awardID),
+     awards.awardid
+  from (
+    select * from AwardsPlayers
+    where awardid = "Triple Crown"
+    OR awardid = 'MVP'
+  ) awards
+  join  (
+    select  distinct * from  Fielding where pos != 'OF'
+  ) field ON (field.playerID = awards.playerID)
+  WHERE awards.yearID = field.yearID
+  AND awards.playerID = field.playerID
+  group by  field.pos, awards.awardid;
+  +-----+-----------------------+--------------+
+  | pos | count(awards.awardID) | awardID      |
+  +-----+-----------------------+--------------+
+  | 1B  |                    48 | MVP          |
+  | 1B  |                     4 | Triple Crown |
+  | 2B  |                    18 | MVP          |
+  | 2B  |                     4 | Triple Crown |
+  | 3B  |                    23 | MVP          |
+  | 3B  |                     1 | Triple Crown |
+  | C   |                    18 | MVP          |
+  | CF  |                    25 | MVP          |
+  | CF  |                     2 | Triple Crown |
+  | DH  |                    33 | MVP          |
+  | LF  |                    26 | MVP          |
+  | LF  |                     2 | Triple Crown |
+  | P   |                    23 | MVP          |
+  | P   |                    36 | Triple Crown |
+  | RF  |                    28 | MVP          |
+  | RF  |                     1 | Triple Crown |
+  | SS  |                    20 | MVP          |
+  | SS  |                     6 | Triple Crown |
+  +-----+-----------------------+--------------+
+  18 rows in set (0.15 sec)
+
 ```
 
-# Needs improvements
+
 
 ```sql
 # need to remove the pitching at bats
@@ -403,7 +642,7 @@ inner join (
 ) lg_winners
 on (ws_winners.teamIDwinner = lg_winners.teamIDwinner)
 join teams on (series.teamIDwinner = teams.teamid)
-group by  series.teamIDwinner;
+group by teams.name;
 +----------------------+---------+---------+----------+
 | name                 | ws_wins | lg_wins | div_wins |
 +----------------------+---------+---------+----------+
@@ -429,7 +668,7 @@ group by  series.teamIDwinner;
 
 
 
-## Might want to stich part 1 with part 2
+## Might want to stitch part 1 with part 2
 
 select teams.name, coalesce(lg_wins,0), coalesce(ws_wins, 0), coalesce(div_wins,0) from teams
 left outer Join (
