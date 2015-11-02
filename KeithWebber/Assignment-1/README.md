@@ -334,10 +334,11 @@ Use the appropriate SQL queries to find answers to the following questions:
      select * from AwardsPlayers
      where awardid = "Triple Crown"
    ) awards
-   inner join  (
-     select  playerID, pos, MAX(g), yearID from  Fielding
+  join  (
+     select  playerID, pos, MAX(g) as max_games, yearID from  Fielding
      group by playerid, yearid
-   ) field ON (field.playerID = awards.playerID)
+   ) field
+   ON (field.playerID = awards.playerID)
    WHERE EXISTS  (
      select * from  Pitching
      where field.playerID != Pitching.playerid
@@ -359,15 +360,21 @@ where fielding.pos = "SS" AND awards.awardid = 'Triple Crown'
 
    select
      field.pos,
-     count(awards.awardID)
+     field.playerid,
+     field.yearid,
+     awards.awardID
    from (
      select * from AwardsPlayers
      where awardid = "Triple Crown"
+     order by playerid
    ) awards
    inner join  (
-     select  playerid, yearid,  pos from  Fielding
+     select  distinct yearid, playerid, pos from  Fielding
+     where g=(
+       select MAX(g)
+     )
      group by playerid, pos, yearid
-
+     order by playerid
    ) field ON (field.playerID = awards.playerID)
    WHERE not EXISTS  (
         select * from  Pitching
@@ -375,7 +382,7 @@ where fielding.pos = "SS" AND awards.awardid = 'Triple Crown'
       )
    and (awards.yearID = field.yearID
    AND awards.playerID = field.playerID)
-   group by  field.pos;
+   group by  field.pos, field.playerid;
 
 
 
@@ -525,25 +532,25 @@ where fielding.pos = "SS" AND awards.awardid = 'Triple Crown'
   from Master players
   JOIN fielding ON (players.playerID = fielding.playerID)
   JOIN Batting bat ON (bat.playerID = players.playerID)
-  WHERE bat.ab >= 301
+  WHERE bat.ab >= 300
   GROUP BY fielding.pos
-  ORDER BY bat.rbi DESC;
+  ORDER BY batting_average DESC;
   +-----+-----------------+------------------+-------------+
   | pos | batting_average | Average_HomeRuns | Average_RBI |
   +-----+-----------------+------------------+-------------+
-  | P   |      0.28330651 |           6.1980 |     60.4212 |
-  | OF  |      0.28346289 |          12.2007 |     64.9105 |
-  | CF  |      0.27568416 |          14.1634 |     61.3736 |
-  | DH  |      0.27807213 |          17.2563 |     70.2555 |
-  | 2B  |      0.27309667 |           6.4783 |     53.5728 |
-  | LF  |      0.27610233 |          15.2329 |     64.4096 |
-  | 3B  |      0.27303266 |           9.9283 |     60.5570 |
-  | RF  |      0.27630439 |          16.0473 |     66.5444 |
-  | 1B  |      0.28249574 |          13.6744 |     70.6064 |
-  | SS  |      0.26798584 |           6.5790 |     53.6738 |
-  | C   |      0.27074001 |           9.2821 |     56.3062 |
+  | OF  |      0.28342139 |          12.1901 |     64.8622 |
+  | P   |      0.28299173 |           6.1785 |     60.2750 |
+  | 1B  |      0.28244747 |          13.6581 |     70.5461 |
+  | DH  |      0.27800636 |          17.2363 |     70.1864 |
+  | RF  |      0.27627588 |          16.0339 |     66.5003 |
+  | LF  |      0.27607382 |          15.2230 |     64.3734 |
+  | CF  |      0.27564919 |          14.1535 |     61.3276 |
+  | 2B  |      0.27301461 |           6.4693 |     53.5092 |
+  | 3B  |      0.27298959 |           9.9138 |     60.4924 |
+  | C   |      0.27052215 |           9.2383 |     56.1654 |
+  | SS  |      0.26793084 |           6.5721 |     53.6295 |
   +-----+-----------------+------------------+-------------+
-  11 rows in set (1.84 sec)
+  11 rows in set (1.86 sec)
 ```
 
 ### 5) Return all player info for all players that won an MVP and a Gold Glove during their careers, along with the number of times they won each.
@@ -562,7 +569,8 @@ where fielding.pos = "SS" AND awards.awardid = 'Triple Crown'
   ) awards2
   on (awards.playerid = awards2.playerid)
   join Master players ON (awards.playerID = players.playerID)
-  group by  awards.playerid;
+  group by  awards.playerid
+  order by nameLast;
   +-----------+-------------+---------+----------+
   | nameFirst | nameLast    | gg_wins | mvp_wins |
   +-----------+-------------+---------+----------+
@@ -618,6 +626,7 @@ where fielding.pos = "SS" AND awards.awardid = 'Triple Crown'
   | Robin     | Yount       |       1 |        2 |
   +-----------+-------------+---------+----------+
   50 rows in set (0.01 sec)
+
 ```
 
 ### 6) Calculate the number of world series, division titles, and league championships for all teams.
@@ -642,30 +651,39 @@ inner join (
 ) lg_winners
 on (ws_winners.teamIDwinner = lg_winners.teamIDwinner)
 join teams on (series.teamIDwinner = teams.teamid)
-group by teams.name;
-+----------------------+---------+---------+----------+
-| name                 | ws_wins | lg_wins | div_wins |
-+----------------------+---------+---------+----------+
-| Anaheim Angels       |       1 |       1 |        1 |
-| Arizona Diamondbacks |       1 |       1 |        2 |
-| Atlanta Braves       |       1 |       5 |        6 |
-| Baltimore Orioles    |       3 |       5 |        2 |
-| Boston Americans     |       7 |       4 |        5 |
-| Chicago White Sox    |       3 |       1 |        1 |
-| Cincinnati Reds      |       5 |       5 |        1 |
-| Cleveland Blues      |       2 |       2 |        4 |
-| Detroit Tigers       |       4 |       2 |        1 |
-| Florida Marlins      |       2 |       2 |        2 |
-| Los Angeles Dodgers  |       5 |       5 |        3 |
-| Minnesota Twins      |       2 |       2 |        1 |
-| New York Highlanders |      27 |      11 |        9 |
-| New York Mets        |       2 |       4 |        3 |
-| Oakland Athletics    |       4 |       6 |        2 |
-| Philadelphia Quakers |       2 |       5 |        2 |
-| St. Louis Browns     |      10 |       5 |        6 |
-+----------------------+---------+---------+----------+
-
-
+group by teams.name, series.teamIDwinner;
++------------------------+---------+---------+----------+
+| name                   | ws_wins | lg_wins | div_wins |
++------------------------+---------+---------+----------+
+| Anaheim Angels         |       1 |       1 |        1 |
+| Arizona Diamondbacks   |       1 |       1 |        2 |
+| Atlanta Braves         |       1 |       5 |        6 |
+| Baltimore Orioles      |       3 |       5 |        2 |
+| Boston Americans       |       7 |       4 |        5 |
+| Boston Red Sox         |       7 |       4 |        5 |
+| Chicago White Sox      |       3 |       1 |        1 |
+| Cincinnati Redlegs     |       5 |       5 |        1 |
+| Cincinnati Reds        |       5 |       5 |        1 |
+| Cleveland Blues        |       2 |       2 |        4 |
+| Cleveland Bronchos     |       2 |       2 |        4 |
+| Cleveland Indians      |       2 |       2 |        4 |
+| Cleveland Naps         |       2 |       2 |        4 |
+| Detroit Tigers         |       4 |       2 |        1 |
+| Florida Marlins        |       2 |       2 |        2 |
+| Los Angeles Dodgers    |       5 |       5 |        3 |
+| Minnesota Twins        |       2 |       2 |        1 |
+| New York Highlanders   |      27 |      11 |        9 |
+| New York Mets          |       2 |       4 |        3 |
+| New York Yankees       |      27 |      11 |        9 |
+| Oakland Athletics      |       4 |       6 |        2 |
+| Philadelphia Blue Jays |       2 |       5 |        2 |
+| Philadelphia Phillies  |       2 |       5 |        2 |
+| Philadelphia Quakers   |       2 |       5 |        2 |
+| St. Louis Browns       |      10 |       5 |        6 |
+| St. Louis Cardinals    |      10 |       5 |        6 |
+| St. Louis Perfectos    |      10 |       5 |        6 |
++------------------------+---------+---------+----------+
+27 rows in set (0.04 sec)
 
 
 ## Might want to stitch part 1 with part 2
