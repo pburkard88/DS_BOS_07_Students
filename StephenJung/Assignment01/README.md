@@ -4,7 +4,7 @@
 Submitted by Stephen Jung
 
 
-**Contents**
+**Contents**  
 1. Assignment01.docx
 
     This word document contains answers to the SQL assignment.  
