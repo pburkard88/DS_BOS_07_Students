@@ -433,7 +433,8 @@ group by  series.teamIDwinner;
 
 select teams.name, coalesce(lg_wins,0), coalesce(ws_wins, 0), coalesce(div_wins,0) from teams
 left outer Join (
-  SELECT teamid, count(*) AS ws_wins FROM teams
+  SELECT teamid, count(*) AS w
+  s_wins FROM teams
   WHERE WSWin = 'Y'
   group by teamid
 ) ws_winners
@@ -536,8 +537,51 @@ order by teams.name;
 ```
 
 
-
-
 ### 7) Calculate the average salary (as a percentage of yearly average) of all MVPs ever in major league baseball.
 
+```sql
+  select Salaries.yearid, avg(Salaries.salary) from Salaries
+  inner join (select * from awardsplayers where awardid = 'MVP') awards
+  on (Salaries.playerid = awards.playerid)
+
+  group by Salaries.yearid;
+
+  +--------+----------------------+
+  | yearid | avg(Salaries.salary) |
+  +--------+----------------------+
+  |   1981 |        588000.000000 |
+  |   1985 |        955487.323529 |
+  |   1986 |        927376.785714 |
+  |   1987 |        990293.717949 |
+  |   1988 |       1204116.611111 |
+  |   1989 |       1228326.142857 |
+  |   1990 |       1398919.085714 |
+  |   1991 |       2196309.542857 |
+  |   1992 |       2675301.282051 |
+  |   1993 |       2918210.300000 |
+  |   1994 |       3515754.351351 |
+  |   1995 |       4552983.500000 |
+  |   1996 |       4535369.486486 |
+  |   1997 |       4962964.891892 |
+  |   1998 |       5165828.777778 |
+  |   1999 |       6132826.878788 |
+  |   2000 |       7094744.968750 |
+  |   2001 |       8711546.305556 |
+  |   2002 |      10507044.272727 |
+  |   2003 |      11488653.281250 |
+  |   2004 |      11606673.878788 |
+  |   2005 |      13928970.000000 |
+  |   2006 |      13211639.464286 |
+  |   2007 |      12076845.724138 |
+  |   2008 |      14127518.666667 |
+  |   2009 |      14163521.777778 |
+  +--------+----------------------+
+  26 rows in set (0.00 sec)
+
+```
+
 ### 8) Use the statistics available at Baseball-Reference to add Miguel Cabrera's 2012 Triple Crown season to your Database. Make sure to add the appropriate information to all relevant tables.
+
+
+
+
