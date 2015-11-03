@@ -264,34 +264,7 @@ Use the appropriate SQL queries to find answers to the following questions:
 
 
 ```
-```sql
-# mussings on how to calcluate the winners from tables
-  select
-    bat.yearID,
-    bat_rbiq.playerID,
-    bat.hr AS homeruns,
-    bat_rbiq.rbi AS RBI
-  from (    select
-      bat_rbi.playerID,
-      bat_rbi.yearID,
-      MAX(bat_rbi.hr) AS hr
-      from Batting bat_rbi
-      group by bat_rbi.yearID
-      order by bat_rbi.hr asc) bat
-  INNER JOIN (
-    select
-    bat_rbi.playerID,
-    bat_rbi.yearID,
-    MAX(bat_rbi.rbi) AS RBI
-    from Batting bat_rbi
-    group by bat_rbi.yearID
-    order by  bat_rbi.rbi asc
-  ) as bat_rbiq
-  ON (bat.playerID = bat_rbiq.playerID)
-  AND  bat.
-    ;
 
-```
 
 ### 2) Calculate the number of MVPs and Triple Crown winners by position ever in major league baseball.
 ```sql
@@ -323,73 +296,6 @@ Use the appropriate SQL queries to find answers to the following questions:
    | RF  |                     1 |
    | SS  |                     6 |
    +-----+-----------------------+
-
-
-
-
-   select
-      field.pos,
-     count(awards.awardID)
-   from (
-     select * from AwardsPlayers
-     where awardid = "Triple Crown"
-   ) awards
-  join  (
-     select  playerID, pos, MAX(g) as max_games, yearID from  Fielding
-     group by playerid, yearid
-   ) field
-   ON (field.playerID = awards.playerID)
-   WHERE EXISTS  (
-     select * from  Pitching
-     where field.playerID != Pitching.playerid
-      )
-   and awards.yearID = field.yearID
-   AND awards.playerID = field.playerID
-   group by  field.pos;
-
-
-
-select * from fielding
-join awardsPlayers awards
-on (fielding.playerid = awards.playerid)
-where fielding.pos = "SS" AND awards.awardid = 'Triple Crown'
-
-
-
-
-
-   select
-     field.pos,
-     field.playerid,
-     field.yearid,
-     awards.awardID
-   from (
-     select * from AwardsPlayers
-     where awardid = "Triple Crown"
-     order by playerid
-   ) awards
-   inner join  (
-     select  distinct yearid, playerid, pos from  Fielding
-     where g=(
-       select MAX(g)
-     )
-     group by playerid, pos, yearid
-     order by playerid
-   ) field ON (field.playerID = awards.playerID)
-   WHERE not EXISTS  (
-        select * from  Pitching
-        where field.playerID = Pitching.playerid
-      )
-   and (awards.yearID = field.yearID
-   AND awards.playerID = field.playerID)
-   group by  field.pos, field.playerid;
-
-
-
-
-
-
-
 
 
 
@@ -435,30 +341,6 @@ where fielding.pos = "SS" AND awards.awardid = 'Triple Crown'
 
 ```
 
-
-
-```sql
-# need to remove the pitching at bats
-  select
-    field.pos,
-    count(*)
-  from (
-    select  AwardsPlayers.yearID, awardsplayers.playerID from AwardsPlayers
-    inner join Pitching on (pitching.playerID = AwardsPlayers.playerID)
-    where AwardsPlayers.awardid = "Triple Crown"
-    AND pitching.yearID != awardsplayers.yearID
-  ) awards
-  join  (  
-    select Fielding.playerID, Fielding.pos, Fielding.yearID from  Fielding
-    inner join Pitching on (pitching.playerID = Fielding.playerID)
-    where pos != 'OF'
-  ) field
-  ON (field.playerID = awards.playerID)
-  WHERE awards.yearID = field.yearID
-  AND awards.playerID = field.playerID
-  group by field.pos;
-
-```
 
 ### 3) Calculate the number of MVPs and Triple Crown winners by team ever in major league baseball.
 ```sql
