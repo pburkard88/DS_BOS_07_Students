@@ -721,6 +721,17 @@ order by teams.name;
 
 ### 8) Use the statistics available at Baseball-Reference to add Miguel Cabrera's 2012 Triple Crown season to your Database. Make sure to add the appropriate information to all relevant tables.
 
+awardsplayers
+
+insert into awardsplayers(playerID, awardID, yearID, lgID, tie, notes) VALUES ('cabremi01', 'Triple Crown', 2012, 'AL', NULL, "");
+
+ batting
+
+insert into Batting (playerID  , yearID , stint , teamID , lgID , G    , G_batting , AB   , R    , H    , 2B   , 3B   , HR   , RBI  , SB   , CS   , BB   , SO   , IBB  , HBP  , SH   , SF   , GIDP , G_old)
+Values ('cabremi01', 2012,	29,	'DET',	'AL',	161,	697,	622,	109	,205,	40,	0,	44	,139,	4	,1	,66,	98,	.330, .393,	.606,	.999,	null, null);
 
 
+Fielding
 
+insert into Fielding (playerID  , yearID , stint , teamID , lgID , POS , G    , GS   , InnOuts , PO   , A    , E    , DP   , PB   , WP   , SB   , CS   , pickoffs , ZR   )
+VALUES ('cabremi01',2012,		29,'DET',	'AL',	'3B',	154,	154,	142,	1322.0,	383,	127,	243,	13,	31,	.966,	-10,	0,0)
