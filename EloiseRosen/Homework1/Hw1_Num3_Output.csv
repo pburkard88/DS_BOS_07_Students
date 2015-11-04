@@ -1,0 +1,51 @@
+teamID,awardID,COUNT(*)
+ANA,MVP,37
+ARI,"Triple Crown",130
+ATL,MVP,1740
+BAL,MVP,2519
+BAL,"Triple Crown",375
+BOS,MVP,4459
+BOS,"Triple Crown",3330
+BRO,MVP,551
+BRO,"Triple Crown",69
+BSN,MVP,115
+CAL,MVP,806
+CAL,"Triple Crown",75
+CHA,MVP,766
+CHN,MVP,1936
+CHN,"Triple Crown",19
+CIN,MVP,5462
+CIN,"Triple Crown",760
+CLE,MVP,466
+CLE,"Triple Crown",144
+COL,MVP,240
+DET,MVP,771
+DET,"Triple Crown",119
+HOU,MVP,350
+HOU,"Triple Crown",96
+KC1,MVP,76
+KCA,MVP,715
+LAA,MVP,111
+LAN,MVP,474
+LAN,"Triple Crown",252
+MIN,MVP,1086
+MIN,"Triple Crown",30
+ML1,MVP,1182
+ML4,MVP,442
+MON,MVP,352
+MON,"Triple Crown",38
+NY1,MVP,825
+NY1,"Triple Crown",23
+NYA,MVP,8500
+NYA,"Triple Crown",1266
+NYN,MVP,309
+NYN,"Triple Crown",120
+OAK,MVP,1593
+PHA,MVP,464
+PHA,"Triple Crown",169
+PHI,MVP,1778
+PHI,"Triple Crown",240
+PIT,MVP,2423
+SDN,MVP,99
+SDN,"Triple Crown",18
+SEA,MVP,1337
