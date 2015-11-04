@@ -1,0 +1,5 @@
+SELECT teamID, COUNT(CASE WHEN WCWin='Y' THEN 1 END) AS World_Series_Wins, 
+COUNT(CASE WHEN DivWin='Y' THEN 1 END) AS Division_Titles,
+COUNT(CASE WHEN LgWin='Y' THEN 1 END) AS League_Wins
+FROM Teams
+GROUP BY teamID;
