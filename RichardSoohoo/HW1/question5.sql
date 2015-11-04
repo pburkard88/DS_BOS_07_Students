@@ -1,0 +1,1 @@
+SELECT CONCAT(m.nameFirst, m.nameLast), COUNT(a.awardID) FROM master m, awardsplayers a WHERE awardID LIKE %'Gold Glove'% OR %'MVP'%  AND m.playerID = a.playerID
