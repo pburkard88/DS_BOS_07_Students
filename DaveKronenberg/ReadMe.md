@@ -1,2 +1,0 @@
-# Dave Kronenberg
-##Markdown file 
