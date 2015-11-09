@@ -1,0 +1,24 @@
+SELECT nameFirst, nameLast, G_Batting, RBI, HR, Batting.yearID, G, AB, R, H, 2B, 3B, SB, CS, BB, SO, IBB, HBP, SH, SF, GIDP, G_old
+FROM Batting
+JOIN (SELECT nameFirst, nameLast, Master.playerID, yearID
+FROM AwardsPlayers
+JOIN Master
+ON AwardsPlayers.playerID=Master.playerID
+WHERE awardID="Triple Crown")
+AS TCPlayers
+ON TCPlayers.playerID=Batting.playerID
+AND TCPlayers.yearID=Batting.yearID
+ORDER BY G_Batting DESC
+, RBI DESC
+, HR DESC;
+
+SELECT count(awardID) "Number of awards", awardID "Award", POS "Position"
+FROM Fielding
+JOIN AwardsPlayers
+ON Fielding.playerID=AwardsPlayers.playerID
+AND Fielding.yearID=AwardsPlayers.yearID
+WHERE AwardsPlayers.awardID like "%MVP%"
+OR AwardsPlayers.awardID like "Triple Crown"
+GROUP BY  AwardsPlayers.awardID, Fielding.POS
+ORDER BY awardID ASC, count(awardID) DESC;
+

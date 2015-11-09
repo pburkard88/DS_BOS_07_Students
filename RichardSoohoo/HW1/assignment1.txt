@@ -1,0 +1,37 @@
+
+1.
+
+SELECT a.yearID, a.playerID, a.awardID, (b.H / b.AB) AS "AVG", b.RBI, b.HR 
+FROM baseball.awardsplayers a, baseball.batting b 
+WHERE b.yearID = a.yearID
+	AND b.playerID = a.playerID
+	AND a.awardID = 'Triple Crown'
+    GROUP BY HR DESC
+2.
+select f.POS, COUNT(a.awardID) AS awards 
+FROM fielding f INNER JOIN awardsplayers a 
+WHERE a.playerID = f.playerID 
+	AND a.yearID = f.yearID
+	AND (a.awardID = 'Triple Crown' OR a.awardID = 'MVP')
+GROUP BY POS DESC
+
+
+3.select f.teamID, COUNT(a.awardID) AS awards 
+FROM fielding f INNER JOIN awardsplayers a 
+WHERE a.playerID = f.playerID 
+	AND a.yearID = f.yearID
+	AND (a.awardID = 'Triple Crown' OR a.awardID = 'MVP')
+GROUP BY teamID DESC
+
+
+
+
+4.select
+
+5. SELECT *, COUNT(a.awardID) FROM master INNER JOIN WHERE baseball.awardID a LIKE %"Gold Glove"% OR %"MVP"%  AND m.playerID = a.playerID
+
+6. SELECT *, name, Count(DivWin), Count(LgWin), Count(WSWin) FROM baseball.teams WHERE DivWin = "y" AND LgWin = "Y" AND WSWin = "Y"   ORDER BY COUNT(DISTINCT WSWin) DESC
+
+7.  SELECT a.playerID, a.awardID, s.salary 
+ FROM baseball.awardplayers a, baseball.salaries s 
+ WHERE a.playerID = s.playerID AND a.awardID = 'MVP' 

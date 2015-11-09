@@ -1,0 +1,192 @@
+1. Find all of the Triple Crown (Award) winners ever in Major League Baseball, with their complete batting stats for the given year. Order the results in descending order first by batting average, then by RBIs, and lastly by home runs.
+
+Fetching table:
+SELECT a.playerID, a.awardID, b.yearID, b.HR, (b.H/b.AB), b.RBI, b.HR 
+FROM AwardsPlayers a, Batting b 
+WHERE a.playerid = b.playerid AND a.awardID = 'Triple Crown' AND a.yearid = b.yearid
+ORDER BY a.yearID DESC;
+
+
+
+A) By Batting Avg
+SELECT a.playerID, a.awardID, b.yearID, b.HR, (b.H/b.AB), b.RBI, b.HR 
+FROM AwardsPlayers a, Batting b 
+WHERE a.playerid = b.playerid AND a.awardID = 'Triple Crown' AND a.yearid = b.yearid
+ORDER BY (b.H/b.AB) DESC;
+
+B) By RBIs
+SELECT a.playerID, a.awardID, b.yearID, b.HR, (b.H/b.AB), b.RBI, b.HR 
+FROM AwardsPlayers a, Batting b 
+WHERE a.playerid = b.playerid AND a.awardID = 'Triple Crown' AND a.yearid = b.yearid
+ORDER BY b.RBI DESC;
+
+C) By HRs
+SELECT a.playerID, a.awardID, b.yearID, b.HR, (b.H/b.AB), b.RBI, b.HR 
+FROM AwardsPlayers a, Batting b 
+WHERE a.playerid = b.playerid AND a.awardID = 'Triple Crown' AND a.yearid = b.yearid
+ORDER BY b.HR DESC;
+
+——————————————————————————
+
+2. Calculate the number of MVPs and Triple Crown winners by position ever in major league baseball.
+
+Fetching Table:
+SELECT a.playerID, a.awardID, f.yearID, f.POS  
+FROM AwardsPlayers a, Fielding f 
+WHERE a.playerid = f.playerid AND a.awardID = 'Triple Crown' OR a.awardID = 'MVP';
+
+Query:
+SELECT f.POS, COUNT(a.awardID)  
+FROM AwardsPlayers a, Fielding f 
+WHERE a.playerid = f.playerid AND a.yearID = f.yearID AND a.awardID = 'Triple Crown' 
+OR a.awardID = 'MVP' AND a.playerid = f.playerid AND a.yearID = f.yearID
+GROUP BY f.POS;
+
+
+——————————————————————————
+
+3. Calculate the number of MVPs and Triple Crown winners by team ever in major league baseball.
+
+Query:
+SELECT f.teamID, COUNT(a.awardID)  
+FROM AwardsPlayers a, Fielding f 
+WHERE a.playerid = f.playerid AND a.yearID = f.yearID AND a.awardID = 'Triple Crown' 
+OR a.awardID = 'MVP' AND a.playerid = f.playerid AND a.yearID = f.yearID
+GROUP BY f.teamID;
+
+
+——————————————————————————
+
+4. Calculate the average batting average, RBIs, and home runs by position ever in major league baseball. Only consider seasons where a player had at least 300 at-bats (AB).
+
+
+Query:
+SELECT f.POS, (sum(b.H)/sum(b.AB)) BatAVG, sum(b.HR), sum(b.RBI)
+FROM Batting b, Fielding F
+WHERE b.AB >= 300
+AND f.playerID = b.playerID
+GROUP BY f.POS;
+
+
+
+——————————————————————————
+
+5. Return all player info for all players that won an MVP and a Gold Glove during their careers, along with the number of times they won each.
+
+***************************{}{}{}{}{}{}{}{}{}{}{}**********************
+
+Query:
+SELECT a1.playerID, a1.awardID, a2.awardID, b.*, f.*
+FROM Batting b, Fielding f, awardsPlayers a1 
+INNER JOIN awardsPlayers a2 ON a1.awardid = 'Gold Glove'
+WHERE a2.awardid = 'MVP'
+AND b.playerid = a1.playerID
+AND a1.playerID = f.playerID;
+
+^This does everything but give you the number of times they won MVP and Gold Glove, I had trouble with that.
+
+——————————————————————————
+
+6. Calculate the number of world series, division titles, and league championships for all teams.
+
+***************************{}{}{}{}{}{}{}{}{}{}{}**********************
+SELECT teamID, COUNT(DivWin='Y'), COUNT(LgWin='Y'), COUNT(WSWin='Y')
+FROM Teams
+WHERE DivWin = 'Y' OR LgWin = 'Y' OR WSWin = 'Y'
+GROUP BY teamID;
+
+
+——
+Couldn’t figure out CASE WHEN
+
+SELECT teamID, SUM(DivWin), SUM(LgWin), SUM(WSWin)
+CASE DivWin
+	WHEN = 'Y' THEN 1
+    ELSE 0
+END CASE
+
+FROM Teams
+WHERE DivWin = 'Y' OR LgWin = 'Y' OR WSWin = 'Y'
+GROUP BY teamID;
+
+^^^ Produced an error :/
+
+——————————————————————————
+
+7. Calculate the average salary (as a percentage of yearly average) of all MVPs ever in major league baseball.
+
+Getting the table:
+SELECT AVG(s.salary) 
+FROM AwardsPlayers a, Salaries s
+WHERE a.awardID='MVP' 
+AND a.playerID = s.playerID 
+AND a.yearid = s.yearID
+;
+
+
+
+
+
+——————————————————————————
+
+8. Use the statistics available at Baseball-Reference to add Miguel Cabrera's 2012 Triple Crown season to your Database. Make sure to add the appropriate information to all relevant tables.
+
+Cabrera info to be imported:
+
+playerID: milkyCab01
+yearID: 2012
+stint: 1
+teamID: 
+IgID: NA
+G:1
+G_Batting: 87 
+AB: 622
+R: 109
+H: 205
+2B: 40
+3B: 0
+HR: 44
+RBI: 139
+SB: 4
+CS: 1
+BB: 66
+SO: 98
+IBB: 17
+HBP: 3
+SH: 1
+SF: 1
+GIDP: 1
+G_old: 1
+
+
+——
+
+Query:
+INSERT into Batting 
+(playerID, yearID, stint, teamID, lgID, G, G_batting, AB, R, H, 2b, 3b, HR, 
+RBI, SB, CS, BB, SO, IBB, HBP, SH, SF, GIDP, G_old)
+VALUES
+('milkyC02', 2012, 1, 'DET', 'NA', 87, 87, 622, 109, 205, 40, 0, 44, 139, 4, 1, 66, 98, 17, 3, 1, 1, 1, 1 ); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

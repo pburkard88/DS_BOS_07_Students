@@ -1,0 +1,75 @@
+nameFirst,nameLast,awardID,yearID,yearID,awardID,COUNT(*)
+Hank,Aaron,"Gold Glove",1958,1957,MVP,3
+Roberto,Alomar,"Gold Glove",1991,1992,"ALCS MVP",21
+Jeff,Bagwell,"Gold Glove",1994,1994,MVP,1
+Dusty,Baker,"Gold Glove",1981,1977,"NLCS MVP",1
+Ernie,Banks,"Gold Glove",1960,1958,MVP,2
+Johnny,Bench,"Gold Glove",1968,1970,MVP,30
+Mike,Boddicker,"Gold Glove",1990,1983,"ALCS MVP",1
+Bobby,Bonds,"Gold Glove",1971,1973,"AS MVP",59
+Ken,Boyer,"Gold Glove",1958,1964,MVP,5
+George,Brett,"Gold Glove",1985,1980,MVP,2
+Scott,Brosius,"Gold Glove",1999,1998,"WS MVP",1
+Ken,Caminiti,"Gold Glove",1995,1996,MVP,3
+Gary,Carter,"Gold Glove",1980,1981,"AS MVP",6
+Will,Clark,"Gold Glove",1991,1989,"NLCS MVP",1
+Roberto,Clemente,"Gold Glove",1961,1966,MVP,24
+Dave,Concepcion,"Gold Glove",1974,1982,"AS MVP",5
+Andre,Dawson,"Gold Glove",1980,1987,MVP,8
+Jermaine,Dye,"Gold Glove",2000,2005,"WS MVP",1
+Nellie,Fox,"Gold Glove",1957,1959,MVP,3
+Gary,Gaetti,"Gold Glove",1986,1987,"ALCS MVP",4
+Steve,Garvey,"Gold Glove",1974,1974,"AS MVP",20
+Bob,Gibson,"Gold Glove",1965,1964,"WS MVP",27
+Ken,Griffey,"Gold Glove",1990,1992,"AS MVP",20
+Marquis,Grissom,"Gold Glove",1993,1997,"ALCS MVP",4
+Mike,Hampton,"Gold Glove",2003,2000,"NLCS MVP",1
+Rickey,Henderson,"Gold Glove",1981,1989,"ALCS MVP",2
+Keith,Hernandez,"Gold Glove",1978,1979,MVP,11
+Orel,Hershiser,"Gold Glove",1988,1988,"WS MVP",3
+Elston,Howard,"Gold Glove",1963,1963,MVP,2
+Jackie,Jensen,"Gold Glove",1959,1958,MVP,1
+Derek,Jeter,"Gold Glove",2004,2000,"AS MVP",8
+Barry,Larkin,"Gold Glove",1994,1995,MVP,3
+Mike,Lowell,"Gold Glove",2005,2007,"WS MVP",1
+Fred,Lynn,"Gold Glove",1975,1975,MVP,12
+Mickey,Mantle,"Gold Glove",1962,1956,MVP,3
+Roger,Maris,"Gold Glove",1960,1960,MVP,2
+Don,Mattingly,"Gold Glove",1985,1985,MVP,9
+Joe,Mauer,"Gold Glove",2008,2009,MVP,2
+Willie,Mays,"Gold Glove",1957,1954,MVP,48
+Willie,McGee,"Gold Glove",1983,1985,MVP,3
+Joe,Morgan,"Gold Glove",1973,1972,"AS MVP",15
+Thurman,Munson,"Gold Glove",1973,1976,MVP,3
+Dale,Murphy,"Gold Glove",1982,1982,MVP,10
+Graig,Nettles,"Gold Glove",1977,1981,"ALCS MVP",2
+Dave,Parker,"Gold Glove",1977,1978,MVP,6
+Dustin,Pedroia,"Gold Glove",2008,2008,MVP,1
+Terry,Pendleton,"Gold Glove",1987,1991,MVP,3
+Placido,Polanco,"Gold Glove",2007,2006,"ALCS MVP",2
+Kirby,Puckett,"Gold Glove",1986,1991,"ALCS MVP",12
+Albert,Pujols,"Gold Glove",2006,2004,"NLCS MVP",4
+Bobby,Richardson,"Gold Glove",1961,1960,"WS MVP",5
+Cal,Ripken,"Gold Glove",1991,1983,MVP,8
+Frank,Robinson,"Gold Glove",1958,1961,MVP,52
+Ivan,Rodriguez,"Gold Glove",1992,1999,MVP,32
+Jimmy,Rollins,"Gold Glove",2007,2007,MVP,3
+Pete,Rose,"Gold Glove",1969,1973,MVP,4
+Bret,Saberhagen,"Gold Glove",1989,1985,"WS MVP",1
+Ryne,Sandberg,"Gold Glove",1983,1984,MVP,9
+Benito,Santiago,"Gold Glove",1988,2002,"NLCS MVP",3
+Mike,Schmidt,"Gold Glove",1976,1980,"WS MVP",40
+Bobby,Shantz,"Gold Glove",1957,1952,MVP,8
+Ozzie,Smith,"Gold Glove",1980,1985,"NLCS MVP",13
+Ichiro,Suzuki,"Gold Glove",2001,2001,MVP,18
+Joe,Torre,"Gold Glove",1965,1971,MVP,1
+Alan,Trammell,"Gold Glove",1980,1984,"WS MVP",4
+Manny,Trillo,"Gold Glove",1979,1980,"NLCS MVP",3
+Zoilo,Versalles,"Gold Glove",1963,1965,MVP,2
+Larry,Walker,"Gold Glove",1992,1997,MVP,7
+Frank,White,"Gold Glove",1977,1980,"ALCS MVP",8
+Bernie,Williams,"Gold Glove",1997,1996,"ALCS MVP",4
+Maury,Wills,"Gold Glove",1961,1962,"AS MVP",4
+Carl,Yastrzemski,"Gold Glove",1963,1967,MVP,14
+Michael,Young,"Gold Glove",2008,2006,"AS MVP",1
+Robin,Yount,"Gold Glove",1982,1982,MVP,2
