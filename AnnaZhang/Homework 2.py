@@ -46,7 +46,6 @@ for row in table_rows:
     player_stats = dict(zip(get_cols, player_stats))
     players_stats_dicts.append(player_stats)
 
-
 all_pages = []
 for i in ('41', '81', '121'):
     address = ('http://espn.go.com/nba/statistics/player/_/stat/rebounds/year/2015/qualified/false/count' + i)
@@ -94,5 +93,9 @@ for row in table_rows:
 import pandas as pd
 import numpy as np
 
-pd.merge(df_a, df_b, on='PLAYER', how='outer')
+df_a = pd.DataFrame.from_dict(players_stats_dicts)
+df_b = pd.DataFrame.from_dict(players_score_dicts)
+
+pd.merge(df_a, df_b, on=['PLAYER', 'TEAM', 'POSITION', 'MPG', 'GP'], how='outer')
+
 
