@@ -12,9 +12,9 @@ can be found [here](https://github.com/pburkard88/DS_BOS_07/blob/master/Notebook
 
 Relevant Links:
 
-- [NBA Scoring 2014-2015](http://espn.go.com/nba/statistics/player/_/stat/scoring-per-game/qualified/false)  
+- [NBA Scoring 2014-2015](http://espn.go.com/nba/statistics/player/_/stat/scoring-per-game/sort/avgPoints/year/2015/qualified/false)  
  
-- [NBA Assists 2014-2015](http://espn.go.com/nba/statistics/player/_/stat/assists/qualified/false)
+- [NBA Assists 2014-2015](http://espn.go.com/nba/statistics/player/_/stat/assists/sort/avgAssists/year/2015/qualified/false)
 
 
 ### Steps to complete the Assignment

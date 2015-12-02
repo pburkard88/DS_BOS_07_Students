@@ -6,3 +6,8 @@ projects for aspiring Data Scientists to tackle. I will be attempting to accompl
 “Titanic:  Machine Learning from Disaster.” I understand this problem as a supervised, classification exercise. I decided to start with a 101 project as I want to focus on creating a solution both in pandas and R, and compare  
 my solution with more optimized solutions of the community. Having the data set available will allow me to focus more on the fundamental theory behind data science, which I would like to learn more about. It is also a good way to get familiarized with the Kaggle community and start building my portfolio. I hope to successfully identify which sorts of passengers were likely to survive the tragedy.
 
+### Directory Structure
+/* to do add hyperlink tag equivalents to the following */
+- kaggle_titanic/data_files
+- kaggle_titanic/python
+- kaggle_titanic/R
