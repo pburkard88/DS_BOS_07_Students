@@ -1,0 +1,155 @@
+So I'm trying to get the new directory I created for the first homework and I can't seem to get it staged, so that I can push it to my GitHub repository.
+When I try 'git commit -m 'New folder'' from my DaveKronenberg folder I get this 
+
+$ git commit -m 'New Folder'
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+        modified:   HW1 (modified content)
+
+no changes added to commit
+
+and I've tried adding and commiting the folder several time but till keep get1.
+SELECT batting.playerID, batting.yearId,batting.H/batting.AB as AVG, RBI, HR
+
+
+FROM baseball.awardsplayers 
+  JOIN baseball.batting 
+  ON batting.playerId = awardsplayers.playerID AND Batting.yearID  = awardsPlayers.yearID
+
+WHERE awardId = 'Triple Crown'
+
+
+ORDER BY AVG DESC, RBI DESC , HR DESC;
+
+2.
+SELECT fielding.POS,awardID, COUNT(fielding.POS)
+
+FROM baseball.awardsplayers 
+   JOIN baseball.fielding 
+ON fielding.playerId = awardsplayers.playerID AND fielding.yearID  = awardsPlayers.yearID
+
+WHERE awardID = "Triple Crown" OR awardID = "MVP"
+
+GROUP BY fielding.POS, awardID;
+
+3.
+SELECT teamId,awardID, COUNT(baseball.batting.teamID)
+
+FROM baseball.awardsplayers 
+ JOIN baseball.batting 
+ ON batting.playerId = awardsplayers.playerID AND batting.yearID  = awardsPlayers.yearID
+
+WHERE awardID = "Triple Crown" OR awardID = "MVP"
+
+GROUP BY batting.teamID,awardID;
+
+4.
+SELECT baseball.fielding.POS, AVG(RBI) as 'RBI', AVG(HR) as 'HR', SUM(H)/SUM(AB) as 'Avg.'
+
+FROM baseball.batting 
+ JOIN baseball.fielding 
+ ON batting.yearID = fielding.yearID AND batting.playerID = fielding.playerID
+
+WHERE AB > 300
+
+GROUP BY fielding.POS
+
+5.
+SELECT mvpt.playerID, mvpnum, ggnum 
+
+FROM (Select playerID,awardID,COUNT(playerID) as ggnum 
+     
+      FROM baseball.awardsplayers
+
+    
+      WHERE awardId = "Gold Glove" 
+   
+      GROUP BY playerID) as GGT 
+  
+JOIN (Select playerID,awardID,count(playerID) as mvpnum 
+       
+      FROM baseball.awardsplayers
+
+   
+      WHERE awardId = "MVP" 
+   
+      GROUP BY playerID) AS mvpT 
+
+ON GGT.playerID = mvpt.playerID
+
+
+GROUP BY playerID
+
+6.
+SELECT WS.teamId, WSW, LGW, DivW 
+FROM ( 
+    SELECT teamID,COUNT(WSWin) as WSW 
+
+    FROM baseball.teams 
+   
+    WHERE WSWin = 'Y' 
+    
+    GROUP BY teamID) as WS  
+  
+ JOIN
+( SELECT teamID,COUNT(LGWin) as LGW 
+  
+       FROM baseball.teams 
+     
+       WHERE LGWin = 'Y'
+       GROUP BY teamID) as LG
+ 
+  
+ON WS.teamId = LG.teamID 
+
+  JOIN ( SELECT teamID,COUNT(DivWIN) as DivW 
+
+         FROM baseball.teams 
+    
+         WHERE divWin='Y'
+      
+         GROUP BY teamId) as DivT 
+ 
+  ON Divt.teamID = WS.teamID;
+
+7. 
+SELECT AW.playerID, AW.yearId, salary, yearAvg, (salary/yearAvg) as 'Sal PCt.'
+
+FROM baseball.awardsplayers as AW
+
+JOIN baseball.salaries as S ON AW.yearID= S.yearID AND AW.playerID = S.playerID
+
+JOIN (SELECT yearID, AVG(salary) as yearAvg 
+     
+      FROM baseball.salaries 
+  
+      GROUP BY yearID) as avs 
+
+WHERE awardID ='MVP'
+
+8.
+INSERT INTO baseball.allstar(playerId,yearID,lgID) VALUES ('mcabrera', '2012', 'AL');
+
+INSERT INTO allstarfull (playerId, yearID, gameNum,game_id,teamID,lgId,GP,startingPos)
+ VALUES('mcabrera', '2012', 'AL', 7, 'ALS201207100','DET', 'AL',1, 3)
+INSERT INTO baseball.appearances (yearID, teamId,lgId,playerID,experience, G_all,GS, G_batting,G_defense, G_p,G_c,G_1b,G_2b,G_ss,G_lf,G_cf,G_rf,G_of,G_dh,G_ph,G_pr) 
+VALUES('2012', 'DET','AL', 'mCabrera', 10, 161, 154,0,0,2,0,154,0,0,0,0,7,0,0,0,0) 
+INSERT INTO `baseball`.`awardsplayers` (`playerID`,`awardID`,`yearID`,`lgID`,`tie`,`notes`) 
+VALUES('mcabrera', 'MVP', 2012,'AL',null,'3B');
+INSERT INTO `baseball`.`awardsshareplayers`(`awardID`,`yearID`,`lgID`,`playerID`,`pointsWon`,`pointsMax`,`votesFirst`)
+
+VALUES('MVP', '2012', 'AL', 'mcabrera', 362, 448, 22);
+INSERT INTO `baseball`.`batting`(`playerID`,`yearID`,`stint`,`teamID`,`lgID`,`G`,`G_batting`,`AB`,`R`,`H`,`2B`,`3B`,`HR`,`RBI`,`SB`,`CS`,`BB`,`SO`,`IBB`,`HBP`,`SH`,`SF`,`GIDP`,`G_old`)
+
+VALUES( 'mCabrera', 2012, 1,'DET', 'AL', 161, 161, 622, 109, 205, 40, 0, 44, 139, 4, 1, 66, 98, 17, 3, 8, 6, 28, 161); 
+INSERT INTO `baseball`.`battingpost`(`yearID`,`round`,`playerID`,`teamID`,`lgID`,`G`,`AB`,`R`,`H`,`2B`,`3B`,`HR`,`RBI`,`SB`,`CS`,`BB`,`SO`,`IBB`,`HBP`,`SH`,`SF`,`GIDP`)
+
+VALUES( 2012, 'ALDS1', 'mCabreara','DET', 'AL', 5,20, 1, 5 ,2,0,0,1,0,0,1,1,0, 1, 0,0,1)
+INSERT INTO `baseball`.`battingpost`(`yearID`,`round`,`playerID`,`teamID`,`lgID`,`G`,`AB`,`R`,`H`,`2B`,`3B`,`HR`,`RBI`,`SB`,`CS`,`BB`,`SO`,`IBB`,`HBP`,`SH`,`SF`,`GIDP`)
+
+VALUES( 2012, 'ALCS', 'mCabreara','DET', 'AL', 4,16, 3, 5 ,1,0,1,4,0,0,3,2,1, 1, 0,0,1)
+
+INSERT INTO `baseball`.`battingpost`(`yearID`,`round`,`playerID`,`teamID`,`lgID`,`G`,`AB`,`R`,`H`,`2B`,`3B`,`HR`,`RBI`,`SB`,`CS`,`BB`,`SO`,`IBB`,`HBP`,`SH`,`SF`,`GIDP`)
+
+VALUES( 2012, 'WS', 'mCabreara','DET', 'AL', 4,13, 1, 3 ,0,0,1,3,0,0,3,4,0, 0, 0,0,0)ting this. I've run 'git Init' and added all of the files again in the subdirectory as well. 

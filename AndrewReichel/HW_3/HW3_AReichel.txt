@@ -1,0 +1,11 @@
+﻿Homework Assignment 3- Andy Reichel
+11/21/2015
+DAT_BOS_07: Final Project Abstract
+
+iRobot's latest incarnation of its flagship commercial robot, Roomba, takes a leap forward in technology integration, system complexity and connectivity.  Adding new features such as visual SLAM, new ground truth sensing and floor-type detection, the Roomba 980 is now the most advanced commercial product in the iRobot suite to date. 
+
+In addition to the feature-rich robot-side improvements, iRobot now has access to near real-time robot feedback, real world usage data, and in-situ heath/diagnostic information of robot modules and components.  Now armed with the information to make better informed design decisions and more accurate understanding of customer use, we have the potential to prioritize current and future platform development in line with actual customer need.  One such case has already been identified as needing further investigation.
+
+The new carpet type detection makes use of several inputs to determine what type of surface it is operating on and will throttle power to the cleaning subsystem to more efficiently clean, prolonging mission time, battery life, and ultimately leading to a cleaner floor.  However, there are floor types that have proven to be indeterminate given the current identification algorithm, resulting in unpredictable robot reaction.
+
+For my final project, I would like to focus on this problem, and begin to address it through integration of addition robot feedback into a solution that will yield the successful classification of the identified 'ambiguous' flooring types.  I believe through starting with classification algorithms I can quickly determine the efficacy of alternative sensing methodologies and implement a successful model to better inform future robot behavior.

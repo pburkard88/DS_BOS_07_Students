@@ -1,0 +1,58 @@
+1.
+SELECT *
+FROM Allstar a, Batting b
+WHERE a.playerID = b.playerID AND a.yearID = b.yearID
+ORDER BY b.RBI
+
+SELECT *
+FROM Allstar a, Batting b
+WHERE a.playerID = b.playerID AND a.yearID = b.yearID
+ORDER BY b.HR
+
+2.
+SELECT *
+FROM AwardsPlayers a
+WHERE a.awardID='MVP' OR a.awardID='Triple Crown'
+ORDER BY a.playerID
+
+3.
+SELECT t.teamID, COUNT(DISTINCT a.awardID) 
+FROM AwardsPlayers a, Teams t
+WHERE a.yearID = t.yearID AND a.awardID='MVP' OR a.awardID="Triple Crown"
+GROUP BY t.teamID
+ORDER BY COUNT(DISTINCT a.awardID) DESC;
+
+4. 
+SELECT *
+FROM AwardsPlayers a
+WHERE a.awardID='MVP' OR a.awardID='Triple Crown'
+ORDER BY a.playerID
+
+5. 
+SELECT a.playerID, COUNT(DISTINCT a.awardID)
+FROM AwardsPlayers a, BattingPost b
+WHERE a.awardID='MVP' OR a.awardID='Gold Glove' AND a.playerID = b.playerID
+GROUP BY a.playerID
+ORDER BY COUNT(DISTINCT a.awardID) desc 
+
+6.
+SELECT t.teamID, COUNT(DISTINCT t.WCWin), COUNT(DISTINCT t.WSWIN), COUNT(DISTINCT t.DivWin)
+FROM Teams t
+GROUP BY t.teamID
+
+7.
+SELECT a.playerID, AVG(s.salary), AVG(s.salary)/(SELECT AVG(salary) AS AverageSalary FROM Salaries)as PCT_of_Total 
+FROM Salaries s, AwardsPlayers a
+WHERE s.playerID = a.playerID AND a.awardID='MVP'
+GROUP BY a.playerID
+ORDER BY AVG(s.salary)
+
+8. 
+INSERT INTO Allstar (playerID, yearID, lgID)
+VALUES ('mcabrera', '2012', 'AL’);
+
+INSERT INTO BattingPost (yearID, teamID, lgID, G, AB, R, H, 2B, 3B, HR)
+VALUES ('2012','FLA', 'AL','161', '622','109','205','40', '41', '139’);
+
+
+

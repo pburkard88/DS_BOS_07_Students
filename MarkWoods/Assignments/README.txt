@@ -1,0 +1,1 @@
+This folder will hold Assignments for the Data Science class.

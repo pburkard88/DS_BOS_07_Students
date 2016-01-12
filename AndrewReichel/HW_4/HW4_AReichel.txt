@@ -1,0 +1,11 @@
+﻿Homework Assignment 4- Andy Reichel
+12/06/2015
+DAT_BOS_07: Final Project Data Collection
+
+I have been in contact with the engineers originally responsible for developing the carpet detection behavior and have sat with them to step through their data collection process, gain access to their repo and discuss methods to arrive at a reasonable result.
+
+I have to convert the discrete .mat data files to a file type that is digestible by pandas and then I will be off to the races.  Should be simple to write a two liner in matlab to convert each file to a csv and then I'll assemble a singular data frame aggregating the data from the 30 different robots under test.
+
+Looking forward to chugging through a [potentially] imperfect data set!
+
+

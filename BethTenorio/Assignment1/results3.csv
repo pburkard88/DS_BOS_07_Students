@@ -1,0 +1,31 @@
+name,count(f.teamID)
+"Anaheim Angels",1
+"Arizona Diamondbacks",1
+"Atlanta Braves",7
+"Baltimore Orioles",6
+"Boston Red Sox",13
+"Brooklyn Dodgers",5
+"Boston Braves",1
+"California Angels",1
+"Chicago White Sox",2
+"Chicago Cubs",6
+"Cincinnati Reds",16
+"Cleveland Indians",1
+"Detroit Tigers",9
+"Kansas City Royals",2
+"Los Angeles Dodgers",7
+"Minnesota Twins",5
+"Milwaukee Braves",1
+"Milwaukee Brewers",3
+"New York Giants",5
+"New York Yankees",25
+"Oakland Athletics",11
+"Philadelphia Athletics",4
+"Philadelphia Phillies",6
+"Pittsburgh Pirates",6
+"San Diego Padres",1
+"Seattle Mariners",4
+"San Francisco Giants",8
+"St. Louis Cardinals",16
+"Texas Rangers",3
+"Washington Senators",3
